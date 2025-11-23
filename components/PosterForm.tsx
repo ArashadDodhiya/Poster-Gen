@@ -3,19 +3,19 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { supabase } from "../lib/supabaseClient"
-import { 
-  Upload, 
-  Sparkles, 
-  Palette, 
-  Type, 
-  Building2, 
+import {
+  Upload,
+  Sparkles,
+  Palette,
+  Type,
+  Building2,
   Image,
   Loader2,
   CheckCircle2,
   X
 } from "lucide-react"
 
-export default function PosterForm({ onResult }: { onResult: (r: any) => void }) {
+export default function PosterForm({ onResult, userId }: { onResult: (r: any) => void; userId?: string }) {
   const [businessType, setBusinessType] = useState("Cake Shop")
   const [headline, setHeadline] = useState("")
   const [details, setDetails] = useState("")
@@ -27,21 +27,21 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
   const [currentStep, setCurrentStep] = useState(1)
 
   const businessTypes = [
-  { value: "Restaurant", icon: "🍽️", color: "from-red-500 to-orange-500" },
-  { value: "Clothing Store", icon: "👗", color: "from-pink-500 to-rose-500" },
-  { value: "Beauty Salon", icon: "💇", color: "from-purple-500 to-indigo-500" },
-  { value: "Gym / Fitness", icon: "💪", color: "from-orange-500 to-red-600" },
-  { value: "Real Estate", icon: "🏡", color: "from-green-600 to-emerald-700" },
-  { value: "Grocery Store", icon: "🛒", color: "from-yellow-500 to-lime-600" },
-  { value: "Home Services", icon: "🛠️", color: "from-blue-500 to-cyan-600" },
-  { value: "Tuition / Coaching", icon: "📚", color: "from-amber-500 to-yellow-600" },
+    { value: "Restaurant", icon: "🍽️", color: "from-red-500 to-orange-500" },
+    { value: "Clothing Store", icon: "👗", color: "from-pink-500 to-rose-500" },
+    { value: "Beauty Salon", icon: "💇", color: "from-purple-500 to-indigo-500" },
+    { value: "Gym / Fitness", icon: "💪", color: "from-orange-500 to-red-600" },
+    { value: "Real Estate", icon: "🏡", color: "from-green-600 to-emerald-700" },
+    { value: "Grocery Store", icon: "🛒", color: "from-yellow-500 to-lime-600" },
+    { value: "Home Services", icon: "🛠️", color: "from-blue-500 to-cyan-600" },
+    { value: "Tuition / Coaching", icon: "📚", color: "from-amber-500 to-yellow-600" },
 
-  // Your older ones:
-  { value: "Cake Shop", icon: "🎂", color: "from-pink-500 to-rose-500" },
-  { value: "Tiffin Service", icon: "🍱", color: "from-green-500 to-emerald-500" },
-  { value: "Boutique", icon: "👜", color: "from-blue-500 to-cyan-500" },
-  { value: "Cafe", icon: "☕", color: "from-stone-600 to-amber-700" },
-]
+    // Your older ones:
+    { value: "Cake Shop", icon: "🎂", color: "from-pink-500 to-rose-500" },
+    { value: "Tiffin Service", icon: "🍱", color: "from-green-500 to-emerald-500" },
+    { value: "Boutique", icon: "👜", color: "from-blue-500 to-cyan-500" },
+    { value: "Cafe", icon: "☕", color: "from-stone-600 to-amber-700" },
+  ]
 
 
   const styles = [
@@ -110,7 +110,7 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
       const capData = await capRes.json()
       if (capData.error) throw new Error(capData.error)
 
-      const captions = capData.text?.split(/\n+/).filter(Boolean).slice(0,3) ?? []
+      const captions = capData.text?.split(/\n+/).filter(Boolean).slice(0, 3) ?? []
       onResult({ imageUrl: posterData.imageUrl, captions })
     } catch (err: any) {
       alert('Error: ' + (err.message || String(err)))
@@ -129,17 +129,15 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
         <div className="flex items-center justify-between mb-4">
           {[1, 2, 3].map((step) => (
             <div key={step} className="flex items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
-                step <= currentStep 
-                  ? 'bg-blue-600 text-white' 
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${step <= currentStep
+                  ? 'bg-blue-600 text-white'
                   : 'bg-gray-200 text-gray-500'
-              }`}>
+                }`}>
                 {step}
               </div>
               {step < 3 && (
-                <div className={`w-24 h-1 mx-2 ${
-                  step < currentStep ? 'bg-blue-600' : 'bg-gray-200'
-                }`} />
+                <div className={`w-24 h-1 mx-2 ${step < currentStep ? 'bg-blue-600' : 'bg-gray-200'
+                  }`} />
               )}
             </div>
           ))}
@@ -153,7 +151,7 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
 
       <form onSubmit={handleGenerate} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
         <div className="p-1 bg-gradient-to-r from-blue-600 to-purple-600"></div>
-        
+
         <div className="p-8">
           <AnimatePresence mode="wait">
             {/* Step 1: Business Information */}
@@ -181,11 +179,10 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
                         key={type.value}
                         type="button"
                         onClick={() => setBusinessType(type.value)}
-                        className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                          businessType === type.value
+                        className={`p-4 rounded-xl border-2 transition-all duration-200 ${businessType === type.value
                             ? `border-blue-500 bg-gradient-to-r ${type.color} text-white shadow-lg scale-105`
                             : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                        }`}
+                          }`}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -268,11 +265,10 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
                         key={styleOption.value}
                         type="button"
                         onClick={() => setStyle(styleOption.value)}
-                        className={`p-4 rounded-xl border-2 text-left transition-all duration-200 ${
-                          style === styleOption.value
+                        className={`p-4 rounded-xl border-2 text-left transition-all duration-200 ${style === styleOption.value
                             ? 'border-blue-500 bg-blue-50 text-blue-700 shadow-md'
                             : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                        }`}
+                          }`}
                         whileHover={{ scale: 1.02 }}
                       >
                         <div className="font-medium mb-1">{styleOption.label}</div>
@@ -292,11 +288,10 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
                         key={scheme.value}
                         type="button"
                         onClick={() => setColors(scheme.value)}
-                        className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                          colors === scheme.value
+                        className={`p-4 rounded-xl border-2 transition-all duration-200 ${colors === scheme.value
                             ? 'border-blue-500 bg-blue-50 shadow-md'
                             : 'border-gray-200 bg-white hover:border-gray-300'
-                        }`}
+                          }`}
                         whileHover={{ scale: 1.02 }}
                       >
                         <div className="flex gap-1 mb-2">
@@ -370,9 +365,8 @@ export default function PosterForm({ onResult }: { onResult: (r: any) => void })
             <motion.button
               type="button"
               onClick={prevStep}
-              className={`px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors ${
-                currentStep === 1 ? 'invisible' : ''
-              }`}
+              className={`px-6 py-3 rounded-xl border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors ${currentStep === 1 ? 'invisible' : ''
+                }`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

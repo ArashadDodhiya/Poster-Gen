@@ -5,7 +5,7 @@ export async function ensureBucket(bucketName: string) {
   try {
     // 1) Check if bucket exists
     const { data: existingBucket, error: getError } = await supabaseAdmin.storage.getBucket(bucketName)
-    
+
     if (existingBucket && !getError) {
       console.log(`Bucket '${bucketName}' already exists`)
       return
@@ -29,16 +29,18 @@ export async function ensureBucket(bucketName: string) {
 
     // 3) Set up RLS policies via SQL
     console.log('Setting up storage policies...')
-    await supabaseAdmin.rpc('exec_sql', {
+    const { error: policyError } = await supabaseAdmin.rpc('exec_sql', {
       sql: `
         -- Allow all operations on the posters bucket
         CREATE POLICY IF NOT EXISTS "Public Access to ${bucketName}"
         ON storage.objects FOR ALL
         USING (bucket_id = '${bucketName}');
       `
-    }).catch(err => {
-      console.warn('Policy creation warning (may already exist):', err.message)
     })
+
+    if (policyError) {
+      console.warn('Policy creation warning (may already exist):', policyError.message)
+    }
 
     console.log(`Bucket '${bucketName}' created successfully`)
   } catch (err: any) {

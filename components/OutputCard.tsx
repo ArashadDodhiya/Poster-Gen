@@ -1,13 +1,13 @@
 // components/OutputCard.tsx
 "use client"
 import React, { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { 
-  Download, 
-  ExternalLink, 
-  Copy, 
-  Share2, 
-  CheckCircle2, 
+import { motion, AnimatePresence, Variants } from "framer-motion"
+import {
+  Download,
+  ExternalLink,
+  Copy,
+  Share2,
+  CheckCircle2,
   Image as ImageIcon,
   MessageCircle,
   Sparkles,
@@ -23,7 +23,7 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
 
   const handleDownload = async () => {
     if (!imageUrl) return
-    
+
     try {
       const response = await fetch(imageUrl)
       const blob = await response.blob()
@@ -68,7 +68,7 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
   const shareOnSocialMedia = (platform: string, caption: string) => {
     const text = encodeURIComponent(caption)
     let url = ''
-    
+
     switch (platform) {
       case 'twitter':
         url = `https://twitter.com/intent/tweet?text=${text}`
@@ -83,11 +83,11 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
       default:
         return
     }
-    
+
     window.open(url, '_blank', 'width=600,height=400')
   }
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -97,7 +97,7 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
     }
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
@@ -136,22 +136,20 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
         <div className="flex border-b border-gray-200 mb-6">
           <button
             onClick={() => setActiveTab("poster")}
-            className={`flex items-center gap-2 px-4 py-3 font-medium transition-all duration-200 ${
-              activeTab === "poster"
+            className={`flex items-center gap-2 px-4 py-3 font-medium transition-all duration-200 ${activeTab === "poster"
                 ? "text-blue-600 border-b-2 border-blue-600"
                 : "text-gray-500 hover:text-gray-700"
-            }`}
+              }`}
           >
             <ImageIcon className="w-4 h-4" />
             Poster Image
           </button>
           <button
             onClick={() => setActiveTab("captions")}
-            className={`flex items-center gap-2 px-4 py-3 font-medium transition-all duration-200 ${
-              activeTab === "captions"
+            className={`flex items-center gap-2 px-4 py-3 font-medium transition-all duration-200 ${activeTab === "captions"
                 ? "text-blue-600 border-b-2 border-blue-600"
                 : "text-gray-500 hover:text-gray-700"
-            }`}
+              }`}
           >
             <MessageCircle className="w-4 h-4" />
             Social Captions {captions && `(${captions.length})`}
@@ -189,12 +187,11 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
                           </div>
                         </div>
                       )}
-                      <img 
-                        src={imageUrl} 
-                        alt="Generated Poster" 
-                        className={`w-full h-auto transition-opacity duration-500 ${
-                          imageLoaded ? 'opacity-100' : 'opacity-0'
-                        }`}
+                      <img
+                        src={imageUrl}
+                        alt="Generated Poster"
+                        className={`w-full h-auto transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+                          }`}
                         onLoad={() => setImageLoaded(true)}
                       />
                     </div>
@@ -234,9 +231,9 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
                       Open image in new tab or share directly
                     </p>
                     <div className="space-y-2">
-                      <a 
-                        href={imageUrl} 
-                        target="_blank" 
+                      <a
+                        href={imageUrl}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="block w-full bg-white text-purple-600 border border-purple-200 py-3 rounded-xl font-semibold hover:bg-purple-50 transition-colors duration-200 text-center flex items-center justify-center gap-2"
                       >
@@ -316,7 +313,7 @@ export default function OutputCard({ data }: { data: { imageUrl: string | null, 
                               </>
                             )}
                           </motion.button>
-                          
+
                           <motion.button
                             onClick={() => shareWhatsApp(caption)}
                             className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors duration-200 text-sm font-medium"

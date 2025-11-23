@@ -16,7 +16,8 @@ export async function generatePoster(prompt: string): Promise<string> {
       response_format: "b64_json"
     })
 
-    const b64Image = response.data[0].b64_json!
+    const b64Image = response.data?.[0]?.b64_json ?? ""
+    if (!b64Image) throw new Error("No image data returned")
     return b64Image
   } catch (error: any) {
     console.error("Error generating poster:", error)

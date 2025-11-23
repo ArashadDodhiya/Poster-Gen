@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { Sparkles, ArrowRight, Store, Camera, Palette, Zap } from 'lucide-react';
 
 export default function Home() {
@@ -39,7 +39,7 @@ export default function Home() {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
@@ -72,7 +72,7 @@ export default function Home() {
               <Sparkles className="w-8 h-8" />
               <span className="text-lg font-semibold">AI-Powered Design</span>
             </motion.div>
-            
+
             <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Build Posters
               <motion.span
@@ -84,8 +84,8 @@ export default function Home() {
                 in Seconds
               </motion.span>
             </h1>
-            
-            <motion.p 
+
+            <motion.p
               variants={itemVariants}
               className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
             >
@@ -103,7 +103,7 @@ export default function Home() {
               >
                 <span>Generate Poster</span>
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                
+
                 {/* Animated background effect */}
                 <motion.div
                   className="absolute inset-0 rounded-2xl bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
@@ -124,14 +124,14 @@ export default function Home() {
           {/* Target Audience */}
           <motion.div variants={itemVariants} className="pt-12">
             <p className="text-gray-500 mb-8 text-lg">Perfect for:</p>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
                   className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300"
                   variants={itemVariants}
-                  whileHover={{ 
+                  whileHover={{
                     y: -5,
                     scale: 1.02,
                     transition: { duration: 0.2 }
@@ -152,7 +152,7 @@ export default function Home() {
           </motion.div>
 
           {/* Stats */}
-          <motion.div 
+          <motion.div
             variants={itemVariants}
             className="pt-16 flex flex-wrap justify-center gap-8 text-center"
           >
